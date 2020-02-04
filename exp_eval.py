@@ -29,7 +29,7 @@ def postfix_eval(input_str):
             x = float(item)
         except ValueError:
             x = None
-            if x is not None:
+            if x is not None: #this is a valid operand
                 count +=1
             elif x in s:
                 count -= 1 #not focusing on operators -> looking for operands
