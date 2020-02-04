@@ -12,11 +12,11 @@ def postfix_eval(input_str):
     Returns the result of the expression evaluation. 
     Raises an PostfixFormatException if the input is not well-formed"""
 
-    operandStack = Stack(30)
-    tokenList = input_str.split()
+    bigStack = Stack(30)
+    list_tokens = input_str.split()
     s = ('+', '-', '*', '**', '>>', '<<', '/')
 
-    for item in tokenList:
+    for item in list_tokens:
         try:
             x = float(item)
         except ValueError:
@@ -24,7 +24,7 @@ def postfix_eval(input_str):
             if x is None and item not in s: #value must be a letter or another invalid token
                 raise PostfixFormatException("Invalid token")
     count = 0 #we need a count to keep track of the total number of operands in our string
-    for item in tokenList:
+    for item in list_tokens:
         try:
             x = float(item)
         except ValueError:
@@ -37,18 +37,18 @@ def postfix_eval(input_str):
                 raise PostfixFormatException("Insufficient operands")
 
 
-    for token in tokenList:
+    for token in list_tokens:
         if token not in s:
             val = convert_num(token) #int / float conversion for operands
-            operandStack.push(val)
+            bigStack.push(val)
         elif token in s:
-            num_1 = operandStack.pop()
-            num_2 = operandStack.pop()
+            num_1 = bigStack.pop()
+            num_2 = bigStack.pop()
             new_num = do_math(num_1, num_2, token)
-            operandStack.push(new_num)
-    if operandStack.num_items != 1:
+            bigStack.push(new_num)
+    if bigStack.num_items != 1:
         raise PostfixFormatException("Too many operands")
-    final = operandStack.pop()
+    final = bigStack.pop()
     return final
 
 def convert_num(num):
@@ -85,26 +85,26 @@ def infix_to_postfix(input_str):
     prec["+"] = 2
     prec["-"] = 2
     prec["("] = 1
-    opStack = Stack(30)
-    postfixList = []
-    tokenList = input_str.split()
+    bigStack = Stack(30)
+    finalList = []
+    tokens = input_str.split()
 
-    for token in tokenList:
+    for token in tokens:
         if token in "0123456789":
-            postfixList.append(token)
+            finalList.append(token)
         if token == "(":
-            opStack.push(token)
+            bigStack.push(token)
         if token == ")":
-            topToken = opStack.pop()
+            topToken = bigStack.pop()
             while topToken != '(':
-                postfixList.append(topToken)
-                topToken = opStack.pop()
+                finalList.append(topToken)
+                topToken = bigStack.pop()
 
     #perform for operator uaing precedence
 
-    while not opStack.is_empty():
-        postfixList.append(opStack.pop())
-    return " ".join(postfixList)
+    while not bigStack.is_empty():
+        finalList.append(bigStack.pop())
+    return " ".join(finalList)
 
 
 def prefix_to_postfix(input_str):
@@ -112,19 +112,19 @@ def prefix_to_postfix(input_str):
     """Input argument: a string containing a prefix expression where tokens are 
     space separated.  Tokens are either operators + - * / ** << >> or numbers (integers or floats)
     Returns a String containing a postfix expression(tokens are space separated)"""
-    opStack = Stack(30)
+    bigStack = Stack(30)
     s = ('+', '-', '*', '**', '>>', '<<', '/')
-    tokenList = input_str.split()
+    list_tokens = input_str.split()
 
-    for i in reversed(tokenList):
+    for i in reversed(list_tokens):
         if i in "0123456789":
-            opStack.push(i)
+            bigStack.push(i)
         if i in s:
-            op1 = opStack.pop()
-            op2 = opStack.pop()
+            op1 = bigStack.pop()
+            op2 = bigStack.pop()
             string = op1 + op2 + i
-            opStack.push(string)
-        final = opStack.pop()
+            bigStack.push(string)
+        final = bigStack.pop()
         return(final)
 
 
