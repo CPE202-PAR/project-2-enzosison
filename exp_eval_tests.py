@@ -7,9 +7,9 @@ class test_expressions(unittest.TestCase):
     def test_postfix_eval_01a(self):
         self.assertAlmostEqual(postfix_eval("3 5 +"), 8)
 
-    def test_postfix_eval_01b(self):
-        self.assertAlmostEqual(postfix_eval("8 1 >>"), 4)
-        self.assertAlmostEqual(postfix_eval("8 1 <<"), 16)
+    # def test_postfix_eval_01b(self):
+    #     self.assertAlmostEqual(postfix_eval("8 1 >>"), 4)
+    #     self.assertAlmostEqual(postfix_eval("8 1 <<"), 16)
 
     def test_postfix_eval_01c(self):
         self.assertAlmostEqual(postfix_eval("8 2 **"), 64)
